@@ -1,10 +1,16 @@
 let imagemCenario
 let imagemPersonagem
 let imagemInimigo
+let imagemInimigoGrande
+let imagemInimigoVoador
+let imagemGameOver
 
+let pontuacao
 let cenario
 let personagem
 let inimigo
+let inimigoGrande
+let inimigoVoador
 
 let somDoJogo
 let somDoPulo
@@ -59,19 +65,36 @@ const matrizPersonagem = [
   [660, 810],
 ]
 
+const matrizInimigoGrande = []
+
+const matrizInimigoVoador = []
+
+const inimigos = []
+
 function preload() {
   imagemCenario = loadImage('../assets/image/cenario/floresta.png')
   imagemPersonagem = loadImage('../assets/image/personagem/personagem.png')
-  imagemInimigo = loadImage('../assets/image/personagem/gotinha.png')
-  somDoJogo = loadSound('../assets/music/sounds_trilha_jogo.mp3')
-  somDoPulo = loadSound('../assets/music/sounds_somPulo.mp3')
+  imagemGameOver = loadImage('../assets/image/game-over.png') 
+  imagemInimigo = loadImage('../assets/image/inimigos/gotinha.png')
+  imagemInimigoGrande = loadImage('../assets/image/inimigos/troll.png')
+  imagemInimigoVoador = loadImage('../assets/image/inimigos/gotinha-voadora.png')
+  // somDoJogo = loadSound('../assets/music/sounds_trilha_jogo.mp3')
+  // somDoPulo = loadSound('../assets/music/sounds_somPulo.mp3')
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight)
   cenario = new Cenario(imagemCenario, 3)
-  personagem = new Personagem(matrizPersonagem, imagemPersonagem, 0, 110, 135, 220, 270)
-  inimigo = new Inimigo(matrizInimigo, imagemInimigo, width - 52, 52, 52, 104, 104)
+  pontuacao = new Pontuacao()
+  personagem = new Personagem(matrizPersonagem, imagemPersonagem, 0, 30, 110, 135, 220, 270)
+  const inimigo = new Inimigo(matrizInimigo, imagemInimigo, width - 52, 30, 52, 52, 104, 104, 10, 200)
+  const inimigoGrande = new InimigoGrande (matrizInimigoGrande, imagemInimigoGrande, width * 2, 0, 200, 200, 400, 400, 10, 1500)
+  const inimigoVoador = new InimigoVoador(matrizInimigo, imagemInimigoVoador, width - 52, 200, 52, 52, 200, 150, 10, 2000)
+
+  inimigos.push(inimigo)
+  inimigos.push(inimigoGrande)
+  inimigos.push(inimigoVoador)
+
   frameRate(40)
   somDoJogo.loop()
 }
@@ -87,14 +110,21 @@ function draw() {
   cenario.exibe()
   cenario.move()
 
+  pontuacao.exibe()
+  pontuacao.adicionarPonto()
+
   personagem.exibe()
   personagem.aplicaGravidade()
 
-  inimigo.exibe()
-  inimigo.move()
+  inimigos.forEach(inimigo => {
+    inimigo.exibe()
+    inimigo.move()
 
-  if (personagem.estaColidindo(inimigo)) {
-    console.log('colidiu')
-    noLoop()
-  }
+    if (personagem.estaColidindo(inimigo)) {
+      image(imagemGameOver, width / 2 - 200, height / 3)
+      // noLoop()
+    }
+  })
+
+  
 }
