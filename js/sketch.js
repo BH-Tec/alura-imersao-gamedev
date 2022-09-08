@@ -1,8 +1,11 @@
 let imagemCenario
 let imagemPersonagem
+let imagemInimigo
+
 let cenario
 let personagem
-let imagemInimigo
+let inimigo
+
 let somDoJogo
 let somDoPulo
 
@@ -65,12 +68,12 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  cenario = new Cenario(imagemCenario, 3);
-  personagem = new Personagem(matrizPersonagem, imagemPersonagem, 0, 110, 135, 220, 270);
-  inimigo = new Inimigo(matrizInimigo, imagemInimigo, width - 52, 52, 52, 104, 104);
+  createCanvas(windowWidth, windowHeight)
+  cenario = new Cenario(imagemCenario, 3)
+  personagem = new Personagem(matrizPersonagem, imagemPersonagem, 0, 110, 135, 220, 270)
+  inimigo = new Inimigo(matrizInimigo, imagemInimigo, width - 52, 52, 52, 104, 104)
   frameRate(40)
-  somDoJogo.loop();
+  somDoJogo.loop()
 }
 
 function keyPressed() {
@@ -81,14 +84,14 @@ function keyPressed() {
 }
 
 function draw() {
-  cenario.exibe();
-  cenario.move();
+  cenario.exibe()
+  cenario.move()
 
-  personagem.exibe();
-  personagem.aplicaGravidade();
+  personagem.exibe()
+  personagem.aplicaGravidade()
 
-  inimigo.exibe();
-  inimigo.move();
+  inimigo.exibe()
+  inimigo.move()
 
   if (personagem.estaColidindo(inimigo)) {
     console.log('colidiu')
